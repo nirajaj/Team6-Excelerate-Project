@@ -42,3 +42,20 @@ The app supports user authentication, learner dashboards, course access, profile
 ---
 
 ## Folder Structure
+lib/
+│
+├── screens/
+│ ├── login_screen.dart
+│ ├── signup_screen.dart
+│ ├── reset_password_screen.dart
+│ ├── learner_dashboard.dart
+│ ├── course_screen.dart
+│ ├── user_profile_screen.dart
+│ ├── admin_dashboard.dart
+│ ├── admin_course_management.dart
+│ ├── admin_user_management.dart
+│ └── admin_profile_screen.dart
+│
+├── widgets/
+├── models/
+└── main.dart
