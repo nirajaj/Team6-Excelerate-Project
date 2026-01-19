@@ -1,61 +1,36 @@
-# Learnify – Mobile Learning Management App
+# Learnify 🎓
+Learnify is a modern Flutter application for high-density academic learning. It features a sleek "Neural Architect" design, Firebase authentication, and a dynamic course registry.
 
-## Project Overview
-Learnify is a mobile learning management application developed using Flutter. The application is designed to provide learners with access to educational content through a structured and user-friendly interface, while also offering administrators tools to manage courses and users efficiently.
+## 📱 Screenshots
+<p align="center">
+  <img src="assets/login_ss.png" width="200" />
+  <img src="assets/dashboard_ss.png" width="200" />
+  <img src="assets/signin_ss.png" width="200" />
+  <img src="assets/course_ss.png" width="200" />
+  <img src="assets/coursedetail_ss.png" width="200" />
+</p>
 
-The app supports user authentication, learner dashboards, course access, profile management, and admin control panels.
+## ✨ Features
+- **Firebase Authentication:** Secure Login and Sign-up.
+- **Neural Dashboard:** Animated pulse graphics and daily protocols.
+- **Course Registry:** High-fidelity course cards with search and category filtering.
+- **Persistent Login:** Stay logged in even after closing the app.
 
----
+## 🚀 Tech Stack
+- **Frontend:** Flutter (Dart)
+- **Backend:** Firebase Auth & Cloud Firestore
+- **State Management:** StatefulWidget / Streams
 
-## Objectives
-- Provide a centralized mobile learning platform
-- Improve accessibility to educational content
-- Support role-based access for learners and administrators
-- Demonstrate mobile application development using Flutter
+## 🛠️ Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/nirajaj/Team6-Excelerate-Project.git
 
----
+2. Install dependencies:
+   ```bash
+   flutter pub get
 
-## Key Features
 
-### Authentication
-- User login
-- User registration (Sign up)
-- Password reset
-
-### Learner Features
-- Learner dashboard
-- Access to courses / academy content
-- User profile management
-
-### Admin Features
-- Admin dashboard
-- Course management
-- User management
-- Admin profile management
-
----
-
-## Technology Stack
-- Flutter
-- Dart
-
----
-
-## Folder Structure
-lib/
-│
-├── screens/
-│ ├── login_screen.dart
-│ ├── signup_screen.dart
-│ ├── reset_password_screen.dart
-│ ├── learner_dashboard.dart
-│ ├── course_screen.dart
-│ ├── user_profile_screen.dart
-│ ├── admin_dashboard.dart
-│ ├── admin_course_management.dart
-│ ├── admin_user_management.dart
-│ └── admin_profile_screen.dart
-│
-├── widgets/
-├── models/
-└── main.dart
+3. Run the app:
+   ```bash
+   flutter run
