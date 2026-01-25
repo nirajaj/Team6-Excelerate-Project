@@ -4,6 +4,8 @@ import '../widgets/header_widget.dart';
 import 'dashboard_view.dart';
 import 'academy_screen.dart';
 import 'login_screen.dart';
+import 'support_screen.dart';
+import 'user_profile_screen.dart'; // 1. IMPORT THE PROFILE SCREEN
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -27,21 +29,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     String firstName = user?.displayName?.split(' ')[0] ?? "Explorer";
 
-    // 1. UPDATE THE DASHBOARD IN THE LIST
+    // 2. UPDATED LIST OF PAGES TO INCLUDE USER PROFILE
     final List<Widget> _pages = [
       DashboardView(
         firstName: firstName, 
         pulseAnimation: Tween(begin: 0.1, end: 0.3).animate(_pulseController),
         onAccessAcademy: () {
-          // THIS CHANGES THE TAB TO ACADEMY (Index 1)
           setState(() {
-            _selectedIndex = 1;
+            _selectedIndex = 1; // Switches to Academy
           });
         },
       ),
-      const AcademyScreen(), 
-      const Center(child: Text("Support Screen Active")), 
-      const Center(child: Text("Profile Screen Active")), 
+      const AcademyScreen(),    // Index 1: Registry
+      const SupportScreen(),    // Index 2: Elite Support Form
+      const UserProfileScreen(), // Index 3: NOW SHOWS THE PROFESSIONAL PROFILE
     ];
 
     return Scaffold(
@@ -49,14 +50,21 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       body: SafeArea(
         child: Column(
           children: [
+            // FIXED HEADER (STAYS AT TOP)
             HeaderWidget(
-              currentView: "HOME",
-              onNavigate: (view) {},
+              currentView: _selectedIndex == 0 ? "HOME" : "OTHER",
+              onNavigate: (view) {
+                setState(() {
+                  _selectedIndex = 0; // Click logo to go home
+                });
+              },
               onLogout: () async {
                 await FirebaseAuth.instance.signOut();
                 if (mounted) Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
               },
             ),
+
+            // DYNAMIC MIDDLE AREA
             Expanded(
               child: IndexedStack(
                 index: _selectedIndex,
@@ -66,6 +74,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           ],
         ),
       ),
+      // FIXED BOTTOM NAV (STAYS AT BOTTOM)
       bottomNavigationBar: _buildBottomNav(),
     );
   }
@@ -96,12 +105,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     bool isSelected = _selectedIndex == index;
     return GestureDetector(
       onTap: () => setState(() => _selectedIndex = index),
+      behavior: HitTestBehavior.translucent,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: isSelected ? const Color(0xFF4F46E5) : Colors.grey, size: 24),
+          Icon(icon, color: isSelected ? const Color(0xFF5D5FEF) : Colors.grey, size: 24),
           const SizedBox(height: 4),
-          Text(label.toUpperCase(), style: TextStyle(fontSize: 8, fontWeight: FontWeight.w900, color: isSelected ? const Color(0xFF4F46E5) : Colors.grey)),
+          Text(label.toUpperCase(), 
+            style: TextStyle(
+              fontSize: 8, 
+              fontWeight: FontWeight.w900, 
+              color: isSelected ? const Color(0xFF5D5FEF) : Colors.grey,
+              letterSpacing: 0.5
+            )
+          ),
         ],
       ),
     );
