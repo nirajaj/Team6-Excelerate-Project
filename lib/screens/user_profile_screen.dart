@@ -13,14 +13,19 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   final User? user = FirebaseAuth.instance.currentUser;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // --- DYNAMIC 2D CHARACTER LOGIC (NOTION STYLE) ---
+  // --- DYNAMIC 2D CHARACTER LOGIC (Improved variety) ---
   String _getAvatarUrl(String name) {
     String n = name.toLowerCase();
+    // Logic to detect gender for 2D character
     bool isGirl = n.endsWith('a') || n.endsWith('i') || n.endsWith('e') || n.contains('SARA');
+    
+    // We use the name itself as a seed so every different name gets a different face
+    String seed = Uri.encodeComponent(name);
+
     if (isGirl) {
-      return "https://api.dicebear.com/7.x/notionists/png?seed=Sasha&backgroundColor=b6e3f4";
+      return "https://api.dicebear.com/7.x/notionists/png?seed=$seed&backgroundColor=b6e3f4";
     } else {
-      return "https://api.dicebear.com/7.x/notionists/png?seed=Felix&backgroundColor=c0aede";
+      return "https://api.dicebear.com/7.x/notionists/png?seed=$seed&backgroundColor=c0aede";
     }
   }
 
@@ -40,7 +45,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
             child: Column(
               children: [
-                // 1. MAIN PROFILE CARD
+                // 1. MAIN PROFILE CARD (Includes fix for red overflow)
                 _buildMainProfileCard(fullName, email),
                 const SizedBox(height: 30),
 
@@ -65,7 +70,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   Widget _buildMainProfileCard(String name, String email) {
     return Container(
-      padding: const EdgeInsets.all(30), // Slightly reduced padding for better fit
+      padding: const EdgeInsets.all(30), // Balanced padding for mobile
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(50),
@@ -74,7 +79,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       child: Column(
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start, // Align image with top of text
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // PREMIUM 2D CHARACTER
               Container(
@@ -82,7 +87,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 decoration: BoxDecoration(
                   color: const Color(0xFFF1F5F9),
                   borderRadius: BorderRadius.circular(30),
-                  image: DecorationImage(image: NetworkImage(_getAvatarUrl(name)), fit: BoxFit.cover),
+                  image: DecorationImage(
+                    image: NetworkImage(_getAvatarUrl(name)), 
+                    fit: BoxFit.cover
+                  ),
                   border: Border.all(color: const Color(0xFFF1F5F9), width: 2),
                 ),
               ),
@@ -91,10 +99,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // --- FIXED: WRAP PREVENTS THE RED OVERFLOW ERROR ---
+                    // --- WRAP PREVENTS RED OVERFLOW FOR BADGES ---
                     Wrap(
-                      spacing: 8, // Space between badges
-                      runSpacing: 8, // Space if they wrap to next line
+                      spacing: 8, 
+                      runSpacing: 8,
                       children: [
                         _badge("PLATINUM TIER LEARNER", Colors.black),
                         _badge("ACADEMIC YEAR 2024", const Color(0xFF5D5FEF).withOpacity(0.1), textColor: const Color(0xFF5D5FEF)),
@@ -102,14 +110,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     ),
                     const SizedBox(height: 15),
                     
-                    // Name
+                    // NAME IN CAPITAL
                     Text(
                       name, 
                       style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: -1.2)
                     ),
                     const SizedBox(height: 5),
                     
-                    // Email - FittedBox prevents long emails from breaking the UI
+                    // EMAIL - FittedBox prevents long emails from breaking the UI
                     FittedBox(
                       fit: BoxFit.scaleDown,
                       child: Text(
@@ -124,7 +132,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           ),
           const SizedBox(height: 40),
           
-          // STATS BAR (SYNCED WITH FIREBASE)
+          // STATS BAR (MASTERY LOGIC)
           StreamBuilder<QuerySnapshot>(
             stream: _firestore.collection('progress').where('userId', isEqualTo: user?.uid).snapshots(),
             builder: (context, snapshot) {
@@ -216,7 +224,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   int total = data['totalModules'] ?? 10;
                   String title = data.containsKey('courseTitle') ? data['courseTitle'] : "COURSE VECTOR";
                   
-                  double progressValue = (completed.length / total).clamp(0.1, 1.0); 
+                  double progressValue = (completed.length / total).clamp(0.0, 1.0); 
 
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 20),
