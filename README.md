@@ -67,8 +67,8 @@ Learnify is a high-performance Learning Management System (LMS) built with **Flu
 
 ## 🔐 Admin Access (For Evaluation)
 To access the Governance Suite, select the **Admin** toggle on the Login Screen:
-- **Identity:** `nirajaj133@gmail.com`
-- **Access Key:** `Team6go`
+- **Identity:** `**********`
+- **Access Key:** `**********`
 
 ---
 
